@@ -3,7 +3,7 @@ pragma solidity >=0.4.4 <0.7.0;
 pragma experimental ABIEncoderV2;
 import "./SafeMath.sol";
 
-contract OperacionesBAsicas {
+contract OperacionesBasicas {
     using SafeMath for uint256;
 
     // contractato bstracto
@@ -16,7 +16,7 @@ contract OperacionesBAsicas {
     }
 
     // obtener el banlance de la cuenta
-    function getBalance(address _address) public view returns (uint256) {
+    function getBalance() internal view returns (uint256) {
         return payable(address(this)).balance;
     }
 

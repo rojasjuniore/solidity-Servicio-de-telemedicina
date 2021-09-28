@@ -25,10 +25,12 @@ interface IRC20 {
     function transfer(address recipient, uint256 amount)
         external
         returns (bool);
-        
-     function transferDisney(address _cliente, address receiver, uint256 numTokens)
-        external
-        returns (bool);
+
+    function transferDisney(
+        address _cliente,
+        address receiver,
+        uint256 numTokens
+    ) external returns (bool);
 
     // devuelve un valor boleanos resultado de la operacion de gasto
     function approve(address spender, uint256 amount) external returns (bool);
@@ -110,38 +112,36 @@ contract ERC20Basic is IRC20 {
     {
         // verificamos que tenga los token que quieren enviar
         require(numTokens <= balances[msg.sender]);
-        
+
         // le restamos los token a que envia
         balances[msg.sender] = balances[msg.sender].sub(numTokens);
-        
-        
+
         // le agregamos lo token a los que reciben
         balances[recipient] = balances[recipient].add(numTokens);
-        
+
         // emitimos el evento de tranfer cuando l transacion es exitosa
         emit Tranfer(msg.sender, recipient, numTokens);
-        
+
         return true;
     }
-    
-     function transferDisney(address _cliente, address receiver, uint256 numTokens)
-        public
-        override
-        returns (bool)
-    {
+
+    function transferDisney(
+        address _cliente,
+        address receiver,
+        uint256 numTokens
+    ) public override returns (bool) {
         // verificamos que tenga los token que quieren enviar
         require(numTokens <= balances[_cliente]);
-        
+
         // le restamos los token a que envia
         balances[_cliente] = balances[_cliente].sub(numTokens);
-        
-        
+
         // le agregamos lo token a los que reciben
         balances[receiver] = balances[receiver].add(numTokens);
-        
+
         // emitimos el evento de tranfer cuando l transacion es exitosa
         emit Tranfer(_cliente, receiver, numTokens);
-        
+
         return true;
     }
 
@@ -160,26 +160,22 @@ contract ERC20Basic is IRC20 {
         address buyer,
         uint256 numTokens
     ) public override returns (bool) {
-        
-         // verificamos que tenga los token que quieren enviar
+        // verificamos que tenga los token que quieren enviar
         require(numTokens <= balances[owner]);
         require(numTokens <= allowed[owner][msg.sender]);
-        
-        // le restamos los token al verdedor 
+
+        // le restamos los token al verdedor
         balances[owner] = balances[owner].sub(numTokens);
-        
-        // me lo quito a mi como intermediario de la venta 
+
+        // me lo quito a mi como intermediario de la venta
         allowed[owner][msg.sender] = allowed[owner][msg.sender].sub(numTokens);
-        
-        
+
         // le agrego los token al comprador
         balances[buyer] = balances[buyer].add(numTokens);
-        
+
         // emitimos los cambios
         emit Tranfer(owner, buyer, numTokens);
-        
+
         return true;
     }
-    
-
 }
